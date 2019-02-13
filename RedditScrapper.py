@@ -3,10 +3,15 @@ def Scrapper(subredditname='wallpapers'):
     import re
     import requests
     import os
+    import webbrowser
 
     reddit = praw.Reddit(client_id='VZ1fX-VhJXo91w',
-                         client_secret="RUbLmQVrDRVQ3UvxWtRHAFgPyGg",
-                         user_agent='testscript by /u/ByakuyaV')
+                         client_secret=None,
+                         user_agent='testscript by /u/ByakuyaV',
+                         redirect_uri='https://github.com/vinaysb/Wallpaper-Updater')
+    webbrowser.open(reddit.auth.url(['identity'], '...', implicit=True))
+    # print(reddit.auth.authorize(code))
+    print(reddit.user.me())
 
     subreddit = reddit.subreddit(subredditname)
     img_count = 0
@@ -37,3 +42,6 @@ def Scrapper(subredditname='wallpapers'):
             f.write(r.content)  # Fill the image file
 
         img_count += 1
+
+
+Scrapper()
