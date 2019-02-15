@@ -1,20 +1,18 @@
 import schedule
-from WallpaperUpdater import WallpaperUpdater as job
+from Scripts.WallpaperUpdater import WallpaperUpdater as job
 import win32serviceutil
 import win32service
 import win32event
 import servicemanager
-import socket
 
 
 class AppServerSvc (win32serviceutil.ServiceFramework):
-    _svc_name_ = "WallpaperUpdaterService"
-    _svc_display_name_ = "WallpaperUpdater"
+    _svc_name_ = "WallpaperUpdater"
+    _svc_display_name_ = "Wallpaper Updater"
 
     def __init__(self, args):
         win32serviceutil.ServiceFramework.__init__(self, args)
         self.hWaitStop = win32event.CreateEvent(None, 0, 0, None)
-        socket.setdefaulttimeout(60)
 
     def SvcStop(self):
         self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
@@ -27,7 +25,7 @@ class AppServerSvc (win32serviceutil.ServiceFramework):
         self.main()
 
     def main(self):
-        schedule.every().day.at("10:30").do(job)
+        schedule.every().day.at("22:20").do(job)
         while True:
             schedule.run_pending()
             if win32event.WaitForSingleObject(self.hWaitStop, 5000) == win32event.WAIT_OBJECT_0:
