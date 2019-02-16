@@ -1,12 +1,13 @@
 import schedule
-from Scripts.WallpaperUpdater import WallpaperUpdater as job
+from Scripts.WallpaperUpdater import WallpaperUpdater
 import win32serviceutil
 import win32service
 import win32event
 import servicemanager
+import time
 
 
-class AppServerSvc (win32serviceutil.ServiceFramework):
+class WallpaperUpdaterSvc (win32serviceutil.ServiceFramework):
     _svc_name_ = "WallpaperUpdater"
     _svc_display_name_ = "Wallpaper Updater"
 
@@ -25,12 +26,13 @@ class AppServerSvc (win32serviceutil.ServiceFramework):
         self.main()
 
     def main(self):
-        schedule.every().day.at("22:20").do(job)
+        schedule.every().day.at("12:30").do(WallpaperUpdater)
         while True:
             schedule.run_pending()
+            time.sleep(15)
             if win32event.WaitForSingleObject(self.hWaitStop, 5000) == win32event.WAIT_OBJECT_0:
                 break
 
 
 if __name__ == '__main__':
-    win32serviceutil.HandleCommandLine(AppServerSvc)
+    win32serviceutil.HandleCommandLine(WallpaperUpdaterSvc)

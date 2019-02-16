@@ -62,4 +62,5 @@ def main():
 
 
 def RefreshToken():
+    print(1)
     return main()

@@ -1,4 +1,4 @@
-def Scrapper(subredditname='wallpapers'):
+def Scrapper(dir_path, subredditname='wallpapers'):
     import praw
     import re
     import requests
@@ -37,8 +37,8 @@ def Scrapper(subredditname='wallpapers'):
             file_name += ".jpg"  # Create the image file
 
         r = requests.get(url)
-        os.makedirs('Temp_Images', exist_ok=True)
-        with open('Temp_Images/' + file_name, "wb") as f:
+        os.makedirs(dir_path + 'Temp_Images', exist_ok=True)
+        with open(dir_path + 'Temp_Images/' + file_name, "wb") as f:
             f.write(r.content)  # Fill the image file
 
         img_count += 1
