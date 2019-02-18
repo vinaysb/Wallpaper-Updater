@@ -6,8 +6,6 @@ from Changer import Changer
 
 
 def MainUpdater(subreddit_name='wallpapers'):
-    print(2)
-    print(subreddit_name)
     dir_path = '%s/WallpaperUpdater/' % os.environ['APPDATA']
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)

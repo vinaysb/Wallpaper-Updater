@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import praw
 import random
 import socket

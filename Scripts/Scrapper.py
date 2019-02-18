@@ -10,8 +10,6 @@ def Scrapper(dir_path, subreddit_name):
                          client_secret='RUbLmQVrDRVQ3UvxWtRHAFgPyGg',
                          user_agent='testscript by /u/ByakuyaV',
                          refresh_token=reftoken)
-    # print(reddit.auth.scopes())
-    # print(reddit.user.me())
 
     subreddit = reddit.subreddit(subreddit_name)
     img_count = 0

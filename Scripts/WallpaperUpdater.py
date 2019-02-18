@@ -77,7 +77,7 @@ class UiWallpaperUpdater(object):
 
     def retranslateUi(self, WallpaperUpdater):
         _translate = QtCore.QCoreApplication.translate
-        WallpaperUpdater.setWindowTitle(_translate("WallpaperUpdater", "MainWindow"))
+        WallpaperUpdater.setWindowTitle(_translate("WallpaperUpdater", "Reddit Wallpaper Updater"))
         self.subreddit_entry.setPlaceholderText(_translate("WallpaperUpdater", "wallpapers"))
         self.subreddit_entry_label.setText(_translate("WallpaperUpdater", "Type the name of the subreddit (Without \"/r\")"))
         self.menuFile.setTitle(_translate("WallpaperUpdater", "File"))
@@ -89,7 +89,6 @@ class UiWallpaperUpdater(object):
     def Ok_Pressed(self):
         subreddit_name = self.subreddit_entry.text()
         self.myThread = (ScheduleThread(subreddit_name))
-        # self.myThread.closeDiag.connect(lambda: Connection.accept())
         self.myThread.start()
 
     def Reset_Pressed(self):
@@ -98,7 +97,7 @@ class UiWallpaperUpdater(object):
 
 
 if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = UiWallpaperUpdater()
     ui.setupUi(MainWindow)
