@@ -1,9 +1,9 @@
-def Scrapper(dir_path, subredditname='wallpapers'):
+def Scrapper(dir_path, subreddit_name):
     import praw
     import re
     import requests
     import os
-    from Scripts.RefreshTokenGen import RefreshToken
+    from RefreshTokenGen import RefreshToken
 
     reftoken = RefreshToken()
     reddit = praw.Reddit(client_id='szAEvLMd-fUyIQ',
@@ -13,7 +13,7 @@ def Scrapper(dir_path, subredditname='wallpapers'):
     # print(reddit.auth.scopes())
     # print(reddit.user.me())
 
-    subreddit = reddit.subreddit(subredditname)
+    subreddit = reddit.subreddit(subreddit_name)
     img_count = 0
     errors = 0
     for submission in subreddit.top('week'):

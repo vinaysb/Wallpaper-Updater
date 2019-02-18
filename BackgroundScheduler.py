@@ -1,5 +1,5 @@
 import schedule
-from Scripts.WallpaperUpdater import WallpaperUpdater
+from Scripts.MainUpdater import MainUpdater
 import win32serviceutil
 import win32service
 import win32event
@@ -26,7 +26,7 @@ class WallpaperUpdaterSvc (win32serviceutil.ServiceFramework):
         self.main()
 
     def main(self):
-        schedule.every().day.at("12:30").do(WallpaperUpdater)
+        schedule.every().day.at("19:00").do(MainUpdater)
         while True:
             schedule.run_pending()
             time.sleep(15)
