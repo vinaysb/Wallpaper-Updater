@@ -23,11 +23,20 @@ def receive_connection():
 def send_message(client, premessage):
     """Send message to client and close the connection."""
     # print(message)
+    file = open('templates/redirect.html', 'r')
     if premessage == 0:
         message = 'Successfully connected to reddit'
     else:
         message = premessage
-    client.send('HTTP/1.1 200 OK\r\n\r\n{}'.format(message).encode('utf-8'))
+    http_response = """\
+    http/1.1 200 OK
+    Content-Type: text/html
+    Content-Type: image/png
+    Connection: close
+
+    """ + file.read() + """
+    """
+    client.sendall(bytes(http_response, 'utf-8'))
     client.close()
 
 
@@ -62,3 +71,6 @@ def main():
 
 def RefreshToken():
     return main()
+
+
+print(RefreshToken())

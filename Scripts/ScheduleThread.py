@@ -24,6 +24,3 @@ class ScheduleThread(QThread):
         while True:
             schedule.run_pending()
             time.sleep(15)
-
-
-# str(datetime.now().strftime('%H:%M'))

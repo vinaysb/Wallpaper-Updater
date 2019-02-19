@@ -1,3 +1,8 @@
 Scripts/__pycache__/
 __pycache__/
 *.sublime-workspace
+Wallpaper-Updater_venv/
+Icons/Wallpaper-Updater.psd
+test.py
+Scripts/static/css
+Scripts/static/js
