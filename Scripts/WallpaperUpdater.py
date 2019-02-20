@@ -2,9 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 from ScheduleThread import ScheduleThread
 import webbrowser
-import os
 import ctypes
-from ctypes import wintypes
 
 
 class UiWallpaperUpdater(QtWidgets.QMainWindow):
