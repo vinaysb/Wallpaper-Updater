@@ -2,6 +2,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 from ScheduleThread import ScheduleThread
 import webbrowser
+import os
+import ctypes
+from ctypes import wintypes
 
 
 class UiWallpaperUpdater(QtWidgets.QMainWindow):
@@ -94,6 +97,8 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
         self.actionHide.triggered.connect(self.hide)
         self.actionExit.triggered.connect(QtWidgets.qApp.quit)
         self.trayIcon.show()
+        # scriptDir = os.path.dirname(os.path.realpath('../Icons'))
+        self.setWindowIcon(QtGui.QIcon('..\\Icons\\Wallpaper-Updater.png'))
 
         self.retranslateUi(self)
         QtCore.QMetaObject.connectSlotsByName(self)
@@ -127,6 +132,8 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
 
 
 if __name__ == "__main__":
+    myappid = 'mycompany.Wallpaper-Updater.GUI.0.5'  # arbitrary string
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = UiWallpaperUpdater()
     MainWindow.setupUi()
