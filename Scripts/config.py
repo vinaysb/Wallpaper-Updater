@@ -1,5 +1,4 @@
 import toml
-import datetime
 
 
 def config_saver(obj, file_name):
@@ -11,4 +10,4 @@ def config_loader(file_name):
     try:
         return toml.load(file_name)
     except FileNotFoundError:
-        return ({'date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'currentimg': 6})
+        return ({'date': 0, 'currentimg': 6, 'subreddit_name': 'wallpapers'})

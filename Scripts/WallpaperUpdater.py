@@ -1,8 +1,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 from ScheduleThread import ScheduleThread
+import os
 import webbrowser
 import ctypes
+from config import *
 
 
 class UiWallpaperUpdater(QtWidgets.QMainWindow):
@@ -24,6 +26,7 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(11)
+        self.Logo = self.resource_path("wallpaper_updater_2XT_icon.ico")
         self.setFont(font)
         self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.setFocusPolicy(QtCore.Qt.TabFocus)
@@ -58,7 +61,7 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
         self.menubar.setGeometry(QtCore.QRect(0, 0, 342, 23))
         self.menubar.setObjectName("menubar")
         self.trayIcon = QtWidgets.QSystemTrayIcon(self)
-        self.trayIcon.setIcon(QtGui.QIcon("../Icons/Wallpaper-Updater.png"))
+        self.trayIcon.setIcon(QtGui.QIcon(self.Logo))
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
         self.menuAbout = QtWidgets.QMenu(self.menubar)
@@ -95,8 +98,13 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
         self.actionHide.triggered.connect(self.hide)
         self.actionExit.triggered.connect(QtWidgets.qApp.quit)
         self.trayIcon.show()
-        # scriptDir = os.path.dirname(os.path.realpath('../Icons'))
-        self.setWindowIcon(QtGui.QIcon('..\\Icons\\Wallpaper-Updater.png'))
+        self.setWindowIcon(QtGui.QIcon(self.Logo))
+        dir_path = '%s/WallpaperUpdater/' % os.environ['APPDATA']
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
+        self.settings = config_loader(dir_path + 'settings.toml')
+        if (self.settings['date'] != 0):
+            self.threader(self.settings['subreddit_name'])
 
         self.retranslateUi(self)
         QtCore.QMetaObject.connectSlotsByName(self)
@@ -114,8 +122,8 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
 
     def Ok_Pressed(self):
         subreddit_name = self.subreddit_entry.text()
-        self.myThread = (ScheduleThread(subreddit_name))
-        self.myThread.start()
+        self.settings['date'] = str((datetime.now() + timedelta(minutes=1)).strftime('%H:%M'))
+        self.threader(subreddit_name)
 
     def Reset_Pressed(self):
         self.subreddit_entry.setText("")
@@ -128,9 +136,21 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
     def readme(self):
         webbrowser.open("https://github.com/vinaysb/Wallpaper-Updater/blob/master/README.md")
 
+    def resource_path(self, relative_path):
+        try:
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
+
+    def threader(self, subreddit_name):
+        self.myThread = (ScheduleThread(subreddit_name))
+        self.myThread.start()
+
 
 if __name__ == "__main__":
-    myappid = 'mycompany.Wallpaper-Updater.GUI.0.5'  # arbitrary string
+    myappid = 'mycompany.Wallpaper-Updater.GUI.0.5'
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = UiWallpaperUpdater()

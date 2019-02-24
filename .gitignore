@@ -1,8 +1,21 @@
+# Folders
+
 Scripts/__pycache__/
 __pycache__/
-*.sublime-workspace
 Wallpaper-Updater_venv/
-Icons/Wallpaper-Updater.psd
-test.py
 Scripts/static/css
 Scripts/static/js
+Scripts/build
+Scripts/dist
+
+# Files
+Scripts/Wallpaper-Updater.png
+test.py
+Icons/Wallpaper-Updater.psd
+
+# File Extensions
+
+*.spec
+*.exe
+*.sublime-workspace
+*.ico

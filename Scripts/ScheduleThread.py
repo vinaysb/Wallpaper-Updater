@@ -1,8 +1,8 @@
 from PyQt5.QtCore import QThread, pyqtSignal
 import schedule
 from MainUpdater import MainUpdater
-from datetime import datetime, timedelta
 import time
+from config import *
 
 
 class ScheduleThread(QThread):
@@ -17,10 +17,12 @@ class ScheduleThread(QThread):
 
     def run(self):
         print(1)
+        self.settings = config_loader(dir_path + 'settings.toml')
+        ct = self.settings['date']
         if self.subreddit_name == '':
-            schedule.every().day.at(str((datetime.now() + timedelta(minutes=1)).strftime('%H:%M'))).do(MainUpdater)
+            schedule.every().day.at(ct).do(MainUpdater)
         else:
-            schedule.every().day.at(str((datetime.now() + timedelta(minutes=1)).strftime('%H:%M'))).do(MainUpdater, self.subreddit_name)
-        while True:
+            schedule.every().day.at(ct).do(MainUpdater, self.subreddit_name)
+        while ct == config_loader(dir_path + 'settings.toml')['date']:
             schedule.run_pending()
             time.sleep(15)

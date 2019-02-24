@@ -17,6 +17,5 @@ def MainUpdater(subreddit_name='wallpapers'):
     files = os.listdir(dir_path + 'Temp_images')
     # settings['fileslist'] = files
     Changer(os.path.abspath(dir_path + 'Temp_images/' + files[settings['currentimg']]).replace('\\', '/'))
-    settings['date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     settings['currentimg'] += 1
     config_saver(settings, dir_path + 'settings.toml')
