@@ -7,15 +7,16 @@ Scripts/static/css
 Scripts/static/js
 Scripts/build
 Scripts/dist
+Icons/
 
 # Files
 Scripts/Wallpaper-Updater.png
 test.py
 Icons/Wallpaper-Updater.psd
+Scripts/setup.py
 
 # File Extensions
 
 *.spec
 *.exe
 *.sublime-workspace
-*.ico

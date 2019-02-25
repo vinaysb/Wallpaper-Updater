@@ -5,6 +5,9 @@
 # WallpaperUpdater.py: 1
 PyQt5 == 5.11.3
 
+# setup.py: 1
+cx_Freeze == 5.1.1
+
 # RefreshTokenGen.py: 1
 # Scrapper.py: 2
 praw == 6.1.1

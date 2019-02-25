@@ -5,11 +5,15 @@ import os
 import webbrowser
 import ctypes
 from config import *
+from datetime import datetime, timedelta
+# import logging
 
 
 class UiWallpaperUpdater(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
+        # self.FORMAT = "%(asctime)-15s %(clientip)s %(user)-8s %(message)s"
+        # logging.basicConfig(format=self.FORMAT, level=logging.DEBUG)
 
     def setupUi(self):
         self.setObjectName("WallpaperUpdater")
@@ -26,7 +30,7 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
         font = QtGui.QFont()
         font.setFamily("Times New Roman")
         font.setPointSize(11)
-        self.Logo = self.resource_path("wallpaper_updater_2XT_icon.ico")
+        self.Logo = self.resource_path("WallpaperUpdater.ico")
         self.setFont(font)
         self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.setFocusPolicy(QtCore.Qt.TabFocus)
@@ -99,12 +103,14 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
         self.actionExit.triggered.connect(QtWidgets.qApp.quit)
         self.trayIcon.show()
         self.setWindowIcon(QtGui.QIcon(self.Logo))
-        dir_path = '%s/WallpaperUpdater/' % os.environ['APPDATA']
-        if not os.path.exists(dir_path):
-            os.makedirs(dir_path)
-        self.settings = config_loader(dir_path + 'settings.toml')
-        if (self.settings['date'] != 0):
-            self.threader(self.settings['subreddit_name'])
+        self.dir_path = "%s/WallpaperUpdater/" % os.environ["APPDATA"]
+        if not os.path.exists(self.dir_path):
+            os.makedirs(self.dir_path)
+        self.settings = config_loader(self.dir_path + "settings.toml")
+        # logging.debug(self.settings["date"])
+        if (self.settings["date"] != 0):
+            # logging.info("threader function has been called by default")
+            self.threader(self.settings["subreddit_name"])
 
         self.retranslateUi(self)
         QtCore.QMetaObject.connectSlotsByName(self)
@@ -122,7 +128,9 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
 
     def Ok_Pressed(self):
         subreddit_name = self.subreddit_entry.text()
-        self.settings['date'] = str((datetime.now() + timedelta(minutes=1)).strftime('%H:%M'))
+        self.settings["date"] = str((datetime.now() + timedelta(minutes=1)).strftime("%H:%M"))
+        config_saver(self.settings, self.dir_path + "settings.toml")
+        # logging.debug("threader function has been called by button press")
         self.threader(subreddit_name)
 
     def Reset_Pressed(self):
@@ -145,12 +153,13 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
         return os.path.join(base_path, relative_path)
 
     def threader(self, subreddit_name):
+        # logging.debug("threader function has been called")
         self.myThread = (ScheduleThread(subreddit_name))
         self.myThread.start()
 
 
 if __name__ == "__main__":
-    myappid = 'mycompany.Wallpaper-Updater.GUI.0.5'
+    myappid = "mycompany.Wallpaper-Updater.GUI.0.1"
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = UiWallpaperUpdater()
