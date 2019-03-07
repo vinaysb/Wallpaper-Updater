@@ -6,14 +6,18 @@ import webbrowser
 import ctypes
 from config import *
 from datetime import datetime, timedelta
-# import logging
+import logging
 
 
 class UiWallpaperUpdater(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-        # self.FORMAT = "%(asctime)-15s %(clientip)s %(user)-8s %(message)s"
-        # logging.basicConfig(format=self.FORMAT, level=logging.DEBUG)
+        self.logger = logging.getLogger("WallpaperUpdater")
+        self.filelogger = logging.FileHandler("WallpaperUpdater.log")
+        # self.FORMAT = logging.Formatter("%(asctime)-15s %(clientip)s %(user)-8s %(message)s")
+        # self.filelogger.setFormatter(self.FORMAT)
+        self.logger.addHandler(self.filelogger)
+        self.logger.setLevel(logging.DEBUG)
 
     def setupUi(self):
         self.setObjectName("WallpaperUpdater")
@@ -107,9 +111,9 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
         if not os.path.exists(self.dir_path):
             os.makedirs(self.dir_path)
         self.settings = config_loader(self.dir_path + "settings.toml")
-        # logging.debug(self.settings["date"])
-        if (self.settings["date"] != 0):
-            # logging.info("threader function has been called by default")
+        self.logger.debug(self.settings["date"])
+        if (self.settings["date"] != 0 and self.settings["currentimg"] != 6):
+            self.logger.debug("threader function has been called by default")
             self.threader(self.settings["subreddit_name"])
 
         self.retranslateUi(self)
@@ -130,8 +134,9 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
         subreddit_name = self.subreddit_entry.text()
         self.settings["date"] = str((datetime.now() + timedelta(minutes=1)).strftime("%H:%M"))
         config_saver(self.settings, self.dir_path + "settings.toml")
-        # logging.debug("threader function has been called by button press")
-        self.threader(subreddit_name)
+        self.logger.debug("threader function has been called by button press")
+        self.settings["subreddit_name"] = subreddit_name
+        self.threader(self.settings["subreddit_name"])
 
     def Reset_Pressed(self):
         self.subreddit_entry.setText("")
@@ -153,7 +158,7 @@ class UiWallpaperUpdater(QtWidgets.QMainWindow):
         return os.path.join(base_path, relative_path)
 
     def threader(self, subreddit_name):
-        # logging.debug("threader function has been called")
+        self.logger.debug("threader function has been called")
         self.myThread = (ScheduleThread(subreddit_name))
         self.myThread.start()
 
