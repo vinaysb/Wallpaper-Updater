@@ -20,3 +20,4 @@ Scripts/setup.py
 *.spec
 *.exe
 *.sublime-workspace
+*.log
