@@ -13,7 +13,7 @@ cx_Freeze == 5.1.1
 praw == 6.1.1
 
 # Scrapper.py: 4
-requests == 2.21.0
+requests == 2.31.0
 
 # ScheduleThread.py: 2
 schedule == 0.6.0
